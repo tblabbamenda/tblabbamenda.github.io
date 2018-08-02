@@ -1,0 +1,5 @@
+.nodeInformation:hover {
+  background-color: grey;
+  color: white;
+  cursor: pointer;
+}
