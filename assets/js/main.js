@@ -116,7 +116,18 @@ function Table(rowheaders) {
 
     tr.className = "nodeInformation";
     tr.onclick = function() {
-      window.location.href=action;
+      // var name = document.getElementById("workername");
+      // var email = document.getElementById("workeremail");
+      // var phonenumber = document.getElementById("phonenumber");
+      // var region = document.getElementById("region");
+      //
+      // name.value = rowvalues[0];
+      // phonenumber.value = rowvalues[2];
+      // // region.value = rowvalues[3];
+      //
+      // this.setAttribute("data-toggle", "modal");
+      // this.setAttribute("data-target", "#newworker");
+      // this.click(
     };
     this.tbody.appendChild(tr);
   };
@@ -172,7 +183,8 @@ function getCommunities(option) {
         }
       }
     };
-  } else  {
+  }
+  else  {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         console.log("server said: "  + this.responseText);
@@ -214,16 +226,25 @@ function getCommunities(option) {
 }
 
 function getUsers(option) {
-  // console.log("Creating user table");
-  // var rowheaders = ['Name', 'Phonenumber', 'Community'];
-  // var rowvalues = ['sherlock', '652156811', 'bamenda'];
-  // var userTable = new Table(rowheaders);
-  // console.log("Option: " + option);
-  //
-  // userTable.addvalues(rowvalues, "pages/");
-  // userTable.addvalues(rowvalues, "pages/");
-  //
-  // document.getElementById("table_location").appendChild(userTable.get());
+  var rowheaders = ['Name', 'Phonenumber', 'Region'];
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log("server said: "  + this.responseText);
+      var serverResponse = JSON.parse(this.responseText);
+      var userTable = new Table(rowheaders);
+      for(var x in serverResponse) {
+        var rowvalues = [serverResponse[x].name, serverResponse[x].phonenumber, serverResponse[x].region];
+        userTable.addvalues(rowvalues);
+      }
+      document.getElementById("table_location").appendChild(userTable.get());
+
+    }
+  }
+  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=users", true);
+  // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
 }
 
 function getPatients(option) {
