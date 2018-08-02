@@ -44,18 +44,18 @@ function createWorker() {
   console.log("Creating worker");
   var form = document.getElementById("create_worker_form");
 
-  // var name = form.name.value;
-  // var email = form.email.value;
-  // var phonenumber = form.phonenumber.value;
-  // var password = form.password.value;
-  // var region = form.region.value;
-  // var cdt = form.cdt.value;
-  var name = "Sherlock Wisdom";
-  var email = "wisdomnji@gmail.com";
-  var phonenumber = "652156811";
-  var password = "darwin";
-  var region = "bamenda";
-  var cdt = "general hospital";
+  var name = form.name.value;
+  var email = form.email.value;
+  var phonenumber = form.phonenumber.value;
+  var password = form.password.value;
+  var region = form.region.value;
+  var cdt = form.cdt.value;
+  // var name = "Sherlock Wisdom";
+  // var email = "wisdomnji@gmail.com";
+  // var phonenumber = "652156811";
+  // var password = "darwin";
+  // var region = "bamenda";
+  // var cdt = "general hospital";
 
   var role = {
     get: function() {
@@ -144,22 +144,18 @@ function Table(rowheaders) {
 function getCommunities(option) {
   var xhttp = new XMLHttpRequest();
   if(option == "display_table") {
-    console.log("Creating user table");
+    // console.log("Creating user table");
     var rowheaders = ['Region', 'Shortcode'];
     var rowvalues = ['Bamenda', 'BDA'];
 
     console.log("Option: " + option);
-
-    // userTable.addvalues(rowvalues, "pages/");
-    // userTable.addvalues(rowvalues, "pages/");
-
 
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         console.log("server said: "  + this.responseText);
         var serverResponse = JSON.parse(this.responseText);
         // console.log("size: " + serverResponse.length);
-        console.log("Option: " + option);
+        // console.log("Option: " + option);
         if(Object.keys(serverResponse).length > 0) {
           var regions = document.getElementById("region");
           var cdt = document.getElementById("cdt");
@@ -182,26 +178,30 @@ function getCommunities(option) {
         console.log("server said: "  + this.responseText);
         var serverResponse = JSON.parse(this.responseText);
         // console.log("size: " + serverResponse.length);
-        console.log("Option: " + option);
+        // console.log("Option: " + option);
         if(Object.keys(serverResponse).length > 0) {
           var regions = document.getElementById("region");
-          var cdt = document.getElementById("cdt");
           for(var x in Object.keys(serverResponse)) {
+            var key = Object.keys(serverResponse)[x];
+
+            var region = document.getElementById("region");
             var option = document.createElement("option");
-            optionNode = document.createTextNode(Object.keys(serverResponse)[x]);
-            console.log("region: " + Object.keys(serverResponse)[x]);
+            option.value = key;
+            optionNode = document.createTextNode(key);
             option.appendChild(optionNode);
             option.onclick = function() {
+              var cdt = document.getElementById("cdt");
               cdt.innerHTML = "";
-              for(var y in serverResponse[this.value]) {
+              for(var y in serverResponse[this.value].communities) {
+                var cdtname = serverResponse[this.value].communities[y];
+                // console.log("CDT Name: " + cdtname);
+                cdtNode = document.createTextNode(cdtname);
                 var option1 = document.createElement("option");
-                option1Node = document.createTextNode(serverResponse[this.value][y]);
-                //option1.value = serverResponse[this.value][y].id;
-                option1.appendChild(option1Node);
+                option1.appendChild(cdtNode);
                 cdt.appendChild(option1);
               }
             };
-            regions.appendChild(option);
+            region.appendChild(option);
           }
         }
       }
