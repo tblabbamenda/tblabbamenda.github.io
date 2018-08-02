@@ -4,27 +4,30 @@ function createDTC() {
   var regionName = region.region.value;
   var regionShortcode = region.code.value;
 
-  var cdt = region.name_of_cdt.value;
-  var cdtShortcode = region.cdtcode.value;
+  var cdtList = document.getElementsByClassName("cdt_identification");
+  var cdtShortcode = document.getElementsByClassName("cdt_shortcode");
 
-  // var regionName = "Bamenda"
-  // var regionShortcode = "BMD";
-  //
-  // var cdt = "General Hospital";
-  // var cdtShortcode = "GH";
+
+
+  var cdtCollection = new Array();
+  console.log("CDT id : " + cdtList.length);
+
+  for(var i=0;i<cdtList.length;++i) {
+    var collection = {
+      "name":cdtList[i].value,
+      "shortcode":cdtShortcode[i].value
+    };
+    console.log("name: " + collection.name + "\tshortcode: "+collection.shortcode+"\n");
+    cdtCollection.push(collection);
+  }
+
+  console.log("Number of cdt: "+cdtCollection.length);
 
   var regionValue = {
     "name":regionName,
     "shortcode":regionShortcode
   };
 
-  var cdtValue = {
-    "name":cdt,
-    "shortcode":cdtShortcode
-  };
-
-  // console.log("Region: " + region.region.value);
-  // console.log("CDT: " + cdt);
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -36,7 +39,8 @@ function createDTC() {
 
   xhttp.open("POST", "http://tbproject.localhost/controller.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("type=insert&data=communities&region="+JSON.stringify(regionValue)+"&cdt="+JSON.stringify(cdtValue));
+  console.log("something: " +JSON.stringify(cdtCollection));
+  xhttp.send("type=insert&data=communities&region="+JSON.stringify(regionValue)+"&cdt="+JSON.stringify(cdtCollection));
   return false;
 }
 
@@ -95,11 +99,6 @@ function patientTable() {
 }
 
 function Table(rowheaders) {
-  // var tr = document.createElement("tr");
-  // var thCount = document.createElement("th");
-  // thCount.setAttribute("scope", "col");
-  // thCountNode = document.createTextNode("#");
-  // thCount.appendChild(thCountNode);
   this.table = document.createElement("table");
   this.thead = document.createElement("thead");
   this.tbody = document.createElement("tbody");
@@ -114,6 +113,7 @@ function Table(rowheaders) {
       th.appendChild(thNode);
       tr.appendChild(th);
     }
+
     tr.className = "nodeInformation";
     tr.onclick = function() {
       window.location.href=action;
@@ -214,16 +214,16 @@ function getCommunities(option) {
 }
 
 function getUsers(option) {
-  console.log("Creating user table");
-  var rowheaders = ['Name', 'Phonenumber', 'Community'];
-  var rowvalues = ['sherlock', '652156811', 'bamenda'];
-  var userTable = new Table(rowheaders);
-  console.log("Option: " + option);
-
-  userTable.addvalues(rowvalues, "pages/");
-  userTable.addvalues(rowvalues, "pages/");
-
-  document.getElementById("table_location").appendChild(userTable.get());
+  // console.log("Creating user table");
+  // var rowheaders = ['Name', 'Phonenumber', 'Community'];
+  // var rowvalues = ['sherlock', '652156811', 'bamenda'];
+  // var userTable = new Table(rowheaders);
+  // console.log("Option: " + option);
+  //
+  // userTable.addvalues(rowvalues, "pages/");
+  // userTable.addvalues(rowvalues, "pages/");
+  //
+  // document.getElementById("table_location").appendChild(userTable.get());
 }
 
 function getPatients(option) {
@@ -317,10 +317,12 @@ function getPatients(option) {
 
 function more_cdt() {
   console.log("More cdt");
-  var cdtLocation = document.getElementById("cdt_row")
+  var cdtLocation = document.getElementById("cdt_row");
   cdtLocation = cdtLocation.cloneNode(true);
+  var cdtlength = cdtLocation.getElementsByClassName("cdt_identification").length;
+  cdtLocation.getElementsByClassName("cdt_identification")[cdtlength-1].value = "";
+  cdtLocation.getElementsByClassName("cdt_shortcode")[cdtlength-1].value = "";
   document.getElementById("cdt_location").appendChild(cdtLocation);
 
-  console.log("number of cdts: " + document.getElementById("name_of_cdt").value);
-  console.log("cdtcode: " + document.getElementById("cdtcode").length);
+  console.log("Number of items: " + document.getElementsByClassName("cdt_identification").length);
 }
