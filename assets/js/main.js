@@ -48,7 +48,7 @@ function createWorker() {
   console.log("Creating worker");
   var form = document.getElementById("create_worker_form");
 
-  var name = form.name.value;
+  var name = form.workername.value;
   var email = form.email.value;
   var phonenumber = form.phonenumber.value;
   var password = form.password.value;
@@ -60,6 +60,8 @@ function createWorker() {
   // var password = "darwin";
   // var region = "bamenda";
   // var cdt = "general hospital";
+  console.log("Name: " + name);
+  // return false;
 
   var role = {
     get: function() {
@@ -116,17 +118,19 @@ function Table(rowheaders) {
 
     tr.className = "nodeInformation";
     tr.onclick = function() {
-      // var name = document.getElementById("workername");
-      // var email = document.getElementById("workeremail");
-      // var phonenumber = document.getElementById("phonenumber");
-      // var region = document.getElementById("region");
-      //
-      // name.value = rowvalues[0];
-      // phonenumber.value = rowvalues[2];
-      // // region.value = rowvalues[3];
-      //
-      // this.setAttribute("data-toggle", "modal");
-      // this.setAttribute("data-target", "#newworker");
+      var name = document.getElementById("workername");
+      var email = document.getElementById("workeremail");
+      var phonenumber = document.getElementById("phonenumber");
+      var region = document.getElementById("region");
+      var cdt = document.getElementById("cdt");
+
+      name.value = rowvalues[0];
+      phonenumber.value = rowvalues[1];
+      region.value = rowvalues[2];
+      cdt.value = rowvalues[3];
+
+      this.setAttribute("data-toggle", "modal");
+      this.setAttribute("data-target", "#newworker");
       // this.click(
     };
     this.tbody.appendChild(tr);
@@ -226,7 +230,7 @@ function getCommunities(option) {
 }
 
 function getUsers(option) {
-  var rowheaders = ['Name', 'Phonenumber', 'Region'];
+  var rowheaders = ['Name', 'Phonenumber', 'Region', 'CDT'];
 
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -235,7 +239,7 @@ function getUsers(option) {
       var serverResponse = JSON.parse(this.responseText);
       var userTable = new Table(rowheaders);
       for(var x in serverResponse) {
-        var rowvalues = [serverResponse[x].name, serverResponse[x].phonenumber, serverResponse[x].region];
+        var rowvalues = [serverResponse[x].name, serverResponse[x].phonenumber, serverResponse[x].region, serverResponse[x].cdt];
         userTable.addvalues(rowvalues);
       }
       document.getElementById("table_location").appendChild(userTable.get());
