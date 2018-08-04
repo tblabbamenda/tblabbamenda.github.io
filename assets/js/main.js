@@ -87,6 +87,7 @@ function createWorker() {
     if (this.readyState == 4 && this.status == 200) {
       console.log("Server response: " + this.responseText);
       document.getElementById("close_button").click();
+      location.reload();
     }
   };
 
