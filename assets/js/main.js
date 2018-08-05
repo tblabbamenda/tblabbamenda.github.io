@@ -101,7 +101,39 @@ function patientTable() {
 
 }
 
-function Table(rowheaders) {
+function createUserModal(state, rowvalues, action) {
+  var name = document.getElementById("workername");
+  var email = document.getElementById("workeremail");
+  var phonenumber = document.getElementById("phonenumber");
+  var region = document.getElementById("region");
+  var cdt = document.getElementById("cdt");
+
+  name.value = rowvalues[0];
+  phonenumber.value = rowvalues[1];
+  region.value = rowvalues[2];
+  cdt.value = rowvalues[3];
+
+  state.setAttribute("data-toggle", "modal");
+  state.setAttribute("data-target", action);
+}
+
+function createCommunityModal(state, rowvalues, action) {
+  var region = document.getElementById("region");
+  var code = document.getElementById("code");
+  // var phonenumber = document.getElementById("phonenumber");
+  // var region = document.getElementById("region");
+  // var cdt = document.getElementById("cdt");
+
+  region.value = rowvalues[0];
+  code.value = rowvalues[1];
+  // region.value = rowvalues[2];
+  // cdt.value = rowvalues[3];
+
+  state.setAttribute("data-toggle", "modal");
+  state.setAttribute("data-target", action);
+}
+
+function Table(type, rowheaders) {
   this.table = document.createElement("table");
   this.thead = document.createElement("thead");
   this.tbody = document.createElement("tbody");
@@ -119,19 +151,10 @@ function Table(rowheaders) {
 
     tr.className = "nodeInformation";
     tr.onclick = function() {
-      var name = document.getElementById("workername");
-      var email = document.getElementById("workeremail");
-      var phonenumber = document.getElementById("phonenumber");
-      var region = document.getElementById("region");
-      var cdt = document.getElementById("cdt");
-
-      name.value = rowvalues[0];
-      phonenumber.value = rowvalues[1];
-      region.value = rowvalues[2];
-      cdt.value = rowvalues[3];
-
-      this.setAttribute("data-toggle", "modal");
-      this.setAttribute("data-target", "#newworker");
+      if(type == "users")
+        createUserModal(this, rowvalues,action);
+      else if(type == "community")
+        createCommunityModal(this, rowvalues,action);
       // this.click(
     };
     this.tbody.appendChild(tr);
@@ -176,13 +199,13 @@ function getCommunities(option) {
           var regions = document.getElementById("region");
           var cdt = document.getElementById("cdt");
           var rowheaders = ['Region', 'Shortcode'];
-          var userTable = new Table(rowheaders);
+          var userTable = new Table("community", rowheaders);
           for(var x in Object.keys(serverResponse)) {
             var rowvalues = new Array();
             rowvalues.push(Object.keys(serverResponse)[x]);
             rowvalues.push(serverResponse[Object.keys(serverResponse)[x]].shortcode);
 
-            userTable.addvalues(rowvalues, "pages/");
+            userTable.addvalues(rowvalues, "#newworker");
           }
           document.getElementById("table_location").appendChild(userTable.get());
         }
@@ -238,10 +261,10 @@ function getUsers(option) {
     if (this.readyState == 4 && this.status == 200) {
       console.log("server said: "  + this.responseText);
       var serverResponse = JSON.parse(this.responseText);
-      var userTable = new Table(rowheaders);
+      var userTable = new Table("users", rowheaders);
       for(var x in serverResponse) {
         var rowvalues = [serverResponse[x].name, serverResponse[x].phonenumber, serverResponse[x].region, serverResponse[x].cdt];
-        userTable.addvalues(rowvalues);
+        userTable.addvalues(rowvalues, "#newworker");
       }
       document.getElementById("table_location").appendChild(userTable.get());
 
@@ -562,5 +585,5 @@ function getPatientInformation() {
 }
 
 function updateUsers() {
-  
+
 }
