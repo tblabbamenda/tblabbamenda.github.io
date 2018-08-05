@@ -8,6 +8,10 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
+    <script type="text/javascript" src="/assets/js/main.js">
+
+    </script>
+
     <link rel="stylesheet" href="/assets/css/main.css">
 
     <title>Database</title>
@@ -54,71 +58,51 @@
         <div class="col-3">
           <!-- List group -->
           <div class="list-group" id="myList" role="tablist">
-            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">Demographic Information</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">Diagnosis</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">Specimen Collection</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings" role="tab">Lab</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#followup" role="tab">Follow up</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#outcomerecorded" role="tab">Outcome recorded</a>
+            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#demographic_information" role="tab">Demographic Information</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#diagnosis" role="tab">Diagnosis</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#specimen_collection" role="tab">Specimen Collection</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#lab" role="tab">Lab</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#follow_up" role="tab">Follow up</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#outcome" role="tab">Outcome recorded</a>
 
           </div>
         </div>
         <div class="col-9">
           <!-- Tab panes -->
           <div class="tab-content">
-            <div class="tab-pane active" id="home" role="tabpanel">
+            <div class="tab-pane active" id="demographic_information" role="tabpanel">
               <div class="card">
-                <div class="card-body"></div>
+                <div class="card-body" id="demographic_information_location">
+
+                </div>
               </div>
             </div>
-            <div class="tab-pane" id="profile" role="tabpanel">
+            <div class="tab-pane" id="diagnosis" role="tabpanel">
               <div class="card">
-                <div class="card-body"></div>
+                <div class="card-body" id="diagnosis_location"></div>
               </div>
             </div>
-            <div class="tab-pane" id="messages" role="tabpanel">
+            <div class="tab-pane" id="specimen_collection" role="tabpanel">
               <div class="card">
-                <div class="card-body"></div>
+                <div class="card-body" id="specimen_collection_location"></div>
               </div>
             </div>
-            <div class="tab-pane" id="settings" role="tabpanel">
+            <div class="tab-pane" id="lab" role="tabpanel">
               <div class="card">
-                <div class="card-body"></div>
+                <div class="card-body" id="lab_location"></div>
               </div>
             </div>
-            <div class="tab-pane" id="followup" role="tabpanel">
+            <div class="tab-pane" id="follow_up" role="tabpanel">
               <div class="card">
-                <div class="card-body"></div>
+                <div class="card-body" id="follow_up_location"></div>
               </div>
             </div>
-            <div class="tab-pane" id="outcomerecorded" role="tabpanel">
+            <div class="tab-pane" id="outcome" role="tabpanel">
               <div class="card">
-                <div class="card-body"></div>
+                <div class="card-body" id="outcome_location"></div>
               </div>
             </div>
 
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -130,5 +114,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      getPatientInformation();
+    </script>
   </body>
 </html>

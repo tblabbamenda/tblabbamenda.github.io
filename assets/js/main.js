@@ -254,13 +254,13 @@ function getUsers(option) {
 
 function getPatients(option) {
   // console.log("listing speciments for " +patientId + "\n");
-  console.log("Getting patients");
+  console.log("Getting patients with : " + option);
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       // console.log("server said: "  + this.responseText);
       var serverResponse = JSON.parse(this.responseText);
-      if(serverResponse.length > 0) {
+      if(serverResponse !== null) {
         // document.getElementById("no_specimen").setAttribute('hidden', 'hidden');
         var table = document.createElement("table");
         table.className = "table";
@@ -299,7 +299,10 @@ function getPatients(option) {
         for(var x in serverResponse) {
           var tr1 = document.createElement("tr");
           tr1.className = "nodeInformation";
+          tr1.id = serverResponse[x].id
           tr1.onclick = function() {
+            sessionStorage.setItem("patient_id", this.id);
+            console.log("patient id: "+ serverResponse[x].id);
             window.location.href = "patient/";
           };
           var th = document.createElement("th");
@@ -331,13 +334,23 @@ function getPatients(option) {
 
         table.appendChild(thead);
         table.appendChild(tbody);
+        document.getElementById("table_location").innerHTML = "";
         document.getElementById("table_location").appendChild(table);
+        document.getElementById("table_title").appendChild(document.createTextNode(serverResponse.length + " Records"));
       }
     }
   };
 
-  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=patients", true);
+  var filter = new Array();
+  // var state = option;
+  filter['state'] = option;
+  filter = JSON.stringify(filter);
+  if(option !== null) {
+    xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=patients&filter="+filter, true);
   // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  }
+  else
+  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=patients", true);
   xhttp.send();
 }
 
@@ -351,4 +364,203 @@ function more_cdt() {
   document.getElementById("cdt_location").appendChild(cdtLocation);
 
   console.log("Number of items: " + document.getElementsByClassName("cdt_identification").length);
+}
+
+function getPatientInformation() {
+  var demographic_information = {
+    indexLocation : "demographic_information_location",
+    name:"",
+    age:"",
+    address:"",
+    telephone:"",
+    telephone2:"",
+    gender:"",
+    unique_code: "",
+    insert: function(serverResponse) {
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Name: " + serverResponse.name)));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Age: " + serverResponse.age)));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Address: " + serverResponse.address)));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Telephone: " + serverResponse.phonenumber)));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Telephone 2: " + serverResponse.phonenumber_2)));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Gender: " + serverResponse.gender)));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Unique Code: " + serverResponse.unique_code)));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+    }
+
+  };
+
+  var diagnosis = {
+    indexLocation : "diagnosis_location",
+    symptom : "",
+    patientCategory : "",
+    specimenType : "",
+    reasonForTest : "",
+    tbTreatmentHistory : "",
+
+    insert: function() {
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Symptoms: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Patient Category: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Specimen Type: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Reason for Test: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("TB Treatment History: ")));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+    }
+
+  };
+
+  var specimen_collection = {
+    indexLocation : "specimen_collection_location",
+    date : "",
+    period : "",
+    aspect : "",
+    insert: function(serverResponse) {
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Date: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Period: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Aspect: ")));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+    }
+  };
+
+  var lab = {
+    indexLocation : "lab_location",
+    specimenDate : "",
+    receivedBy : "",
+    smrLsn : "",
+    smrDate : "",
+    result1 : "",
+    result2 : "",
+
+    insert: function() {
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h1").appendChild(document.createTextNode("Smear Microscopy Result")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("br"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Lab Serial Number: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Date: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Result 1: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Result 2: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("br"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("br"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h1").appendChild(document.createTextNode("Xpert MTB/RIF assay")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("br"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Lab Serial Number: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Date: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("MTB result: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("RIF result: ")));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Date: ")));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+    }
+  };
+
+  var follow_up = {
+    indexLocation : "follow_up_location",
+    amoxicilin : "",
+    otherAntibiotic : "",
+    xray : "",
+    follow_up_date : "",
+    comments : "",
+
+    insert: function() {
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("h1").appendChild(document.createTextNode("Smear Microscopy Result")));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("br"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Amoxicilin: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Xray: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Follow up date: ")));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Result 2: ")));
+    }
+  };
+
+  var outcome = {
+    indexLocation : "outcome_location",
+    state : "",
+    tbRxNumber : "",
+    comments : "",
+
+    insert: function() {
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Outcome")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("TB Rx Number: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Comments: ")));
+      document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+
+      document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Date: ")));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("hr"));
+      // document.getElementById(this.indexLocation).appendChild(document.createElement("h5").appendChild(document.createTextNode("Result 2: ")));
+    }
+  };
+
+  // demographic_information.insert();
+  // diagnosis.insert();
+  // specimen_collection.insert();
+  // lab.insert();
+  // follow_up.insert();
+  // outcome.insert();
+  // filter['id'] = sessionStorage.getItem("patient_id");
+
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log("server said: "  + this.responseText);
+      var serverResponse = JSON.parse(this.responseText);
+      for(var x in serverResponse) {
+        if(serverResponse[x].id == sessionStorage.getItem("patient_id")) {
+          demographic_information.insert(serverResponse[x]);
+          diagnosis.insert(serverResponse[x]);
+          specimen_collection.insert(serverResponse[x]);
+          lab.insert(serverResponse[x]);
+          follow_up.insert(serverResponse[x]);
+          outcome.insert(serverResponse[x]);
+        }
+      }
+    }
+  }
+  var filter = new Array;
+  // filter['state'] = sessionStorage.getItem("state");
+  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=patients&filter="+filter, true);
+  // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+
+
+}
+
+function updateUsers() {
+  
 }

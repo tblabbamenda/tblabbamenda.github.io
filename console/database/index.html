@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="/assets/css/main.css">
 
-    <script type="text/javascript" src="js/main.js">
+    <script type="text/javascript" src="/assets/js/main.js">
 
     </script>
 
@@ -56,33 +56,30 @@
 
     <div class="container">
       <br>
+      <h1>Patient Records</h1>  <hr>
       <div class="row">
-        <div class="col-12" id="table_location">
+        <div class="col-12">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <!-- <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+            </div> -->
+          </div>
+          <div class="row">
+            <!-- <small>Minimalist Filter</small><br> -->
+            <div class="col text-center"><button class="btn btn-info" onclick="getPatients('closed')">closed cases</button></div>
+            <div class="col text-center"><button class="btn btn-info" onclick="getPatients('open')">open cases</button></div>
+            <div class="col text-center"><button class="btn btn-info" onclick="getPatients()">all cases</button></div>
+          </div>
+          <hr>
+          <div class="card">
+            <div class="card-header">Closed Cases</div>
+            <div class="card-body">
+              <div id="table_location">
+                <h5 class="" id="table_title"></h5>
+              </div>
             </div>
           </div>
-
-          <!-- <table class="table">
-            <thead class="thead-dark">
-              <tr  >
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody >
-              <tr onclick="window.location.href='patient/'" class="nodeInformation">
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-            </tbody>
-          </table> -->
         </div>
       </div>
     </div>
