@@ -575,9 +575,9 @@ function getPatientInformation() {
       }
     }
   }
-  var filter = new Array;
-  // filter['state'] = sessionStorage.getItem("state");
-  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=patients&filter="+filter, true);
+  var filter = {};
+  filter['id'] = sessionStorage.getItem("patientId");
+  xhttp.open("GET", "http://178.128.174.104/tbproject/controller.php?type=fetch&data=patients&filter="+filter, true);
   // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send();
 
