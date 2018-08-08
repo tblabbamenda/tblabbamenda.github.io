@@ -32,12 +32,14 @@ function createDTC() {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       console.log("Server response: " + this.responseText);
+      document.getElementById("close_button").click();
+      location.reload();
     } else {
       console.log(this.status);
     }
   };
 
-  xhttp.open("POST", "http://tbproject.localhost/controller.php", true);
+  xhttp.open("POST", "http://178.128.174.104/tbproject/controller.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   console.log("something: " +JSON.stringify(cdtCollection));
   xhttp.send("type=insert&data=communities&region="+JSON.stringify(regionValue)+"&cdt="+JSON.stringify(cdtCollection));
@@ -91,7 +93,7 @@ function createWorker() {
     }
   };
 
-  xhttp.open("POST", "http://tbproject.localhost/controller.php", true);
+  xhttp.open("POST", "http://178.128.174.104/tbproject/controller.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("type=insert&data=user&name="+name+"&email="+email+"&phonenumber="+phonenumber+"&password="+password+"&region="+region+"&cdt="+cdt+"&role="+JSON.stringify(role.get()));
   return false;
@@ -248,7 +250,7 @@ function getCommunities(option) {
     };
   }
 
-  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=communities", true);
+  xhttp.open("GET", "http://178.128.174.104/tbproject/controller.php?type=fetch&data=communities", true);
   // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send();
 }
