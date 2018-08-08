@@ -270,7 +270,7 @@ function getUsers(option) {
 
     }
   }
-  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=users", true);
+  xhttp.open("GET", "http://178.128.174.104/tbproject/controller.php?type=fetch&data=users", true);
   // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send();
 }
@@ -324,7 +324,7 @@ function getPatients(option) {
           tr1.className = "nodeInformation";
           tr1.id = serverResponse[x].id
           tr1.onclick = function() {
-            sessionStorage.setItem("patient_id", this.id);
+            sessionStorage.setItem("patientId", this.id);
             console.log("patient id: "+ serverResponse[x].id);
             window.location.href = "patient/";
           };
@@ -366,14 +366,15 @@ function getPatients(option) {
 
   var filter = new Array();
   // var state = option;
-  filter['state'] = option;
+  filter[''] = option;
   filter = JSON.stringify(filter);
-  if(option !== null) {
-    xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=patients&filter="+filter, true);
+  if(option !== null && option !== undefined ) {
+    console.log("sending with option included: " + String(option));
+    xhttp.open("GET", "http://178.128.174.104/tbproject/controller.php?type=fetch&data=patients&filter="+filter, true);
   // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   }
   else
-  xhttp.open("GET", "http://tbproject.localhost/controller.php?type=fetch&data=patients", true);
+  xhttp.open("GET", "http://178.128.174.104/tbproject/controller.php?type=fetch&data=patients", true);
   xhttp.send();
 }
 
@@ -563,21 +564,19 @@ function getPatientInformation() {
     if (this.readyState == 4 && this.status == 200) {
       console.log("server said: "  + this.responseText);
       var serverResponse = JSON.parse(this.responseText);
-      for(var x in serverResponse) {
-        if(serverResponse[x].id == sessionStorage.getItem("patient_id")) {
-          demographic_information.insert(serverResponse[x]);
-          diagnosis.insert(serverResponse[x]);
-          specimen_collection.insert(serverResponse[x]);
-          lab.insert(serverResponse[x]);
-          follow_up.insert(serverResponse[x]);
-          outcome.insert(serverResponse[x]);
-        }
+      if(serverResponse.id == sessionStorage.getItem("patientId")) {
+        demographic_information.insert(serverResponse);
+        diagnosis.insert(serverResponse);
+        specimen_collection.insert(serverResponse);
+        lab.insert(serverResponse);
+        follow_up.insert(serverResponse);
+        outcome.insert(serverResponse);
       }
     }
   }
   var filter = {};
   filter['id'] = sessionStorage.getItem("patientId");
-  xhttp.open("GET", "http://178.128.174.104/tbproject/controller.php?type=fetch&data=patients&filter="+filter, true);
+  xhttp.open("GET", "http://178.128.174.104/tbproject/controller.php?type=fetch&data=patients&filter="+JSON.stringify(filter), true);
   // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send();
 
